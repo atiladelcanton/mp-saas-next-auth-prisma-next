@@ -7,10 +7,15 @@ import {
 
 import Link from 'next/link';
 import RegisterForm from './register-form';
+import { auth } from '@/auth';
+import { redirect } from 'next/navigation';
 
 
-export default  function RegisterPage() {
-
+export default  async function RegisterPage() {
+  const session = await auth();
+  if(session){
+    return redirect('/dashboard')
+  }
 
   return (
     <>

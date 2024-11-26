@@ -9,7 +9,10 @@ export default async function registerAction(_prevState: any, formData: FormData
 
     if(!data.email || !data.name || !data.password)
     {
-        throw new Error("Preencha todos os dados")
+        return {
+            message:'Preencha todos os campos',
+            success:false
+        }
     }
 
     const user = await db.user.findUnique({
@@ -19,7 +22,10 @@ export default async function registerAction(_prevState: any, formData: FormData
     });
 
     if(user){
-        throw new Error("Usuário já existe")
+        return {
+            message:'Usuário já cadastrado',
+            success:false
+        }
     }
     await db.user.create({
         data:{
@@ -28,5 +34,8 @@ export default async function registerAction(_prevState: any, formData: FormData
             password: hashSync(data.password)
         }
     })
-
+    return {
+        message:'Usuário criado com sucesso',
+        success:true
+    }
 }
